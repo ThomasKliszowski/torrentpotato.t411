@@ -41,7 +41,7 @@ def search():
             "imdb_id": params['imdbid'],
             "freeleech": False,
             "type": "movie",
-            "size": torrent['size'],
+            "size": int(float(torrent['size']) / 1024 / 1024),
             "leechers": torrent['leechers'],
             "seeders": torrent['seeders']
         })
