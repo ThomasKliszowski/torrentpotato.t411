@@ -2,6 +2,7 @@ from t411.app import app
 from t411.utils import get_version, require_params
 from t411.client import T411Client
 from flask import jsonify, request, url_for
+import requests
 
 # -----------------------------------------------------------------------------
 
@@ -17,10 +18,11 @@ def hello():
 @app.route("/search/", methods=['GET'])
 def search():
     # Be sure that following params are passed
-    params = require_params(request, ['user', 'passkey', 'imdbid', 'search'])
+    params = require_params(request, ['user', 'passkey', 'imdbid'])
 
     t411_client = T411Client(params['user'], params['passkey'])
-    data = t411_client.request('get', 'torrents/search/%s' % params['search'], params={
+    title = requests.get('http://www.omdbapi.com/?i=%s' % params['imdbid']).json()['Title']
+    data = t411_client.request('get', 'torrents/search/%s' % title, params={
         'cid': '631' # Film
     }).json()
 
