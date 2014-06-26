@@ -4,7 +4,7 @@ upstream torrentpotato_t411_gunicorn_prod {
 
 server {
     listen 80;
-    server_name torrentpotato-t411.stupeflix.com;
+    server_name torrentpotato-t411.thomaskliszowski.fr;
 
     location / {
         proxy_pass http://torrentpotato_t411_gunicorn_prod;
