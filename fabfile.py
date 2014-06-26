@@ -27,7 +27,7 @@ def host(env, host_string, branch, environment):
     env.repos_dir = op.join(env.base_dir, "src")
 
     env.deployed_branch = branch
-    env.supervisor_tasks = ['%s-gunicorn-%s' % (PROJECT_NAME, environment), 'toolbox-watch-freebox']
+    env.supervisor_tasks = ['%s-gunicorn-%s' % (PROJECT_NAME, environment)]
     env.gunicorn_pid = '/tmp/%s-gunicorn-%s.pid' % (PROJECT_NAME, environment)
     env.deploy_dir = op.join(env.base_dir, environment)
     env.current_path = op.join(env.deploy_dir, "current")
