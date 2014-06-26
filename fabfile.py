@@ -1,6 +1,6 @@
 from __future__ import with_statement
 
-from fabric.api import run, sudo, cd, local, env, prefix, lcd, put, get, abort, settings
+from fabric.api import run, sudo, cd, local, env, prefix, put
 from fabric.contrib import files
 from fabric.decorators import task
 
@@ -63,9 +63,8 @@ def deploy():
         run("git pull")
         
         release_path = op.join(env.deploy_dir, "releases", tag)
-        run("npm install -D")
-        run("grunt build")
-        run("mv dist %s" % release_path)
+        run('mkdir %s' % release_path)
+        run("git archive HEAD | tar x -C '%s'" % release_path)
 
     with virtualenv():
         sudo("pip install -r %s" % op.join(env.repos_dir, "requirements.txt"))
@@ -138,8 +137,8 @@ def wash_releases():
             releases.pop(0)
 
 def reload_supervisor():
-    for task in env.supervisor_tasks:
-        sudo("supervisorctl restart %s" % task)
+    for supervisor_task in env.supervisor_tasks:
+        sudo("supervisorctl restart %s" % supervisor_task)
 
 def reload_gunicorn():
     if files.exists(env.gunicorn_pid):
