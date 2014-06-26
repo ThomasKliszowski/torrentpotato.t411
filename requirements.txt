@@ -1,2 +1,4 @@
 Flask==0.10.1
 requests==2.3.0
+gunicorn==19.0.0
+gevent==1.0.1

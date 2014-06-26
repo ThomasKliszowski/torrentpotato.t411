@@ -1,0 +1,9 @@
+[program:torrentpotato.t411-gunicorn-prod]
+environment=PROD=True
+command=/var/code/torrentpotato/prod/venv/bin/gunicorn -c /var/code/torrentpotato/prod/current/etc/gunicorn.conf.py start:app
+user=fabric
+autostart=true
+autorestart=true
+redirect_stderr=true
+killasgroup=true
+stopasgroup=true

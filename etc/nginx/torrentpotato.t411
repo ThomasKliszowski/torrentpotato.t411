@@ -1,0 +1,22 @@
+upstream torrentpotato_t411_gunicorn_prod {
+    server unix:/tmp/torrentpotato.t411-gunicorn-prod.sock;
+}
+
+server {
+    listen 80;
+    server_name torrentpotato-t411.stupeflix.com;
+
+    location / {
+        proxy_pass http://torrentpotato_t411_gunicorn_prod;
+        proxy_read_timeout 10m;
+        proxy_redirect off;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header X-Forwarded-Protocol https;
+
+        client_max_body_size 512M;
+        add_header Access-Control-Allow-Origin *;
+    }
+}
