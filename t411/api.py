@@ -21,11 +21,13 @@ def search():
     params = require_params(request, ['user', 'passkey', 'imdbid'])
 
     t411_client = T411Client(params['user'], params['passkey'])
-    title = requests.get('http://www.omdbapi.com/?i=%s' % params['imdbid']).json()['Title']
-    data = t411_client.request('get', 'torrents/search/%s' % title, params={
-        'cid': '631' # Film
-    }).json()
+    omdb = requests.get('http://www.omdbapi.com/?i=%s' % params['imdbid']).json()
 
+    category_id = '631' # Film
+    if 'Animation' in omdb['Genre']:
+        category_id = '455' # Animation
+
+    data = t411_client.request('get', 'torrents/search/%s %s' % (omdb['Title'], omdb['Year']), params={'cid': category_id}).json()
     if data.get('error'):
         raise Exception(data['error'])
 
