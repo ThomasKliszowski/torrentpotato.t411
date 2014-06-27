@@ -27,14 +27,11 @@ def search():
     if 'Animation' in omdb['Genre']:
         category_id = '455' # Animation
 
-    data = t411_client.request('get', 'torrents/search/%s %s' % (omdb['Title'], omdb['Year']), params={'cid': category_id}).json()
-    if data.get('error'):
-        raise Exception(data['error'])
-
     response = { 'results': [] }
 
     total_results = 0
-    for torrent in data['torrents']:
+    torrents = t411_client.search('%s %s' % (omdb['Title'], omdb['Year']), params={'cid': category_id})
+    for torrent in torrents:
         response['results'].append({
             "release_name": torrent['rewritename'],
             "torrent_id": torrent['id'],
